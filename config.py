@@ -82,6 +82,17 @@ class Config:
                    cls._get_version())
 
     @staticmethod
+    def _validate_config_section(
+        config: dict[str, Any], section_name: str, required_fields: list[tuple[str, type | UnionType, str]]
+    ) -> None:
+        for field_name, field_type, error_msg in required_fields:
+            if field_name not in config:
+                raise RuntimeError(f"Your config does not have required `{section_name}` subsection `{field_name}`.")
+
+            if not isinstance(config[field_name], field_type):
+                raise TypeError(f"`{section_name}` subsection {error_msg}")
+
+    @staticmethod
     def _check_sections(config: dict[str, Any]) -> None:
         sections: list[tuple[str, type | UnionType, str]] = [
             ("token", str, "Section `token` must be a string wrapped in quotes."),
