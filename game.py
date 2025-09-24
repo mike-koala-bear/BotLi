@@ -55,7 +55,7 @@ class Game:
         while event := await game_stream_queue.get():
             match event['type']:
                 case 'chatLine':
-                    await chatter.handle_chat_message(event)
+                    await chatter.handle_chat_message(event, self.takeback_count, max_takebacks)
                     continue
                 case 'opponentGone':
                     if not self.move_task and event.get('claimWinInSeconds') == 0:

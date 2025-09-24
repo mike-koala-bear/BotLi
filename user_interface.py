@@ -276,10 +276,10 @@ class User_Interface:
 
     def _rematch(self) -> None:
         """Toggle automatic rematching offering on/off."""
-        current_state = self.config.rematch.auto_offer
-        self.config.rematch.auto_offer = not current_state
+        current_state = self.config.rematch.enabled
+        self.config.rematch.enabled = not current_state
 
-        if self.config.rematch.auto_offer:
+        if self.config.rematch.enabled:
             print('Rematch functionality enabled.')
         else:
             print('Rematch functionality disabled.')
