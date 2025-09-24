@@ -70,13 +70,13 @@ class Game_Manager:
                 await self._accept_challenge(challenge)
 
             while challenge_request := self._get_next_challenge_request():
-                await self._create_challenge(challenge_request)
+                await self._create_challenge(challenge_request, is_rematch=False)
 
             # Process pending rematch
             if self.rematch_manager.pending_rematch:
                 challenge_request = self.rematch_manager.get_rematch_challenge_request()
                 if challenge_request:
-                    await self._create_challenge(challenge_request)
+                    await self._create_challenge(challenge_request, is_rematch=True)
                     self.rematch_manager.clear_pending_rematch()
 
         for tournament in self.unstarted_tournaments.values():
@@ -327,8 +327,11 @@ class Game_Manager:
 
         return self.tournaments_to_join.popleft()
 
-    async def _create_challenge(self, challenge_request: Challenge_Request) -> None:
-        print(f"Challenging {challenge_request.opponent_username} ...")
+    async def _create_challenge(self, challenge_request: Challenge_Request, is_rematch: bool = False) -> None:
+        if is_rematch:
+            print(f"Offering rematch to {challenge_request.opponent_username} ...")
+        else:
+            print(f"Challenging {challenge_request.opponent_username} ...")
         response = await self.challenger.create(challenge_request)
         print(f"Challenge response: success={response.success}")
 

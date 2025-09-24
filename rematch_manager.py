@@ -88,8 +88,6 @@ class Rematch_Manager:
         if not challenge_request:
             return False
 
-        print(f'Offering rematch to {opponent_name}...')
-
         # Increment rematch count when we OFFER (not when accepted)
         opponent_key = opponent_name.lower()
         self.rematch_counts[opponent_key] = self.rematch_counts.get(opponent_key, 0) + 1
